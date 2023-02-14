@@ -1,11 +1,13 @@
 from django.shortcuts import render
-
+from .models import *
 # Create your views here.
 
 
 def home(request):
-
-    return render(request, 'index.html')
+    views = {}
+    # ORM -> Object Relational Mapping
+    views['services'] = Services.objects.all()
+    return render(request, 'index.html', views)
 
 
 def about(request):
