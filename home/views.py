@@ -20,6 +20,18 @@ def about(request):
 def contact(request):
     views = {}
     views['informations'] = Information.objects.all()
+    if request.method == "POST":
+        name = request.POST['name']
+        email = request.POST['email']
+        subject = request.POST['subject']
+        message = request.POST['message']
+        data = Contact.objects.create(
+            name=name,
+            email=email,
+            subject=subject,
+            message=message
+        )
+        data.save()
     return render(request, 'contact.html', views)
 
 
