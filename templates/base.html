@@ -31,6 +31,14 @@
     <link rel="stylesheet" href="{% static 'css/animate.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+    <style>
+        #cardaddmessage {
+            background-color: #50ad09;
+            color: #ffffff;
+            padding: 10px 0px 10px;
+        }
+    </style>
 </head>
 
 <body>
@@ -46,30 +54,134 @@
                         <li><a href="/about">About</a></li>
                         <li><a href="/services">Services</a></li>
                         <li><a href="/portfolio">Portfolio</a></li>
-                        <li><a href="/price">Pricing</a></li>
+                        <!-- <li><a href="/element">Pricing</a></li> -->
                         <li class="menu-has-children"><a href="">Blog</a>
                             <ul>
                                 <li><a href="blog-home.html">Blog Home</a></li>
                                 <li><a href="blog-single.html">Blog Single</a></li>
                             </ul>
                         </li>
-                        <li class="menu-has-children"><a href="">Pages</a>
-                            <ul>
-                                <li><a href="elements.html">Elements</a></li>
-                                <li class="menu-has-children"><a href="">Level 2 </a>
-                                    <ul>
-                                        <li><a href="#">Item One</a></li>
-                                        <li><a href="#">Item Two</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
+                        <!-- <li class="menu-has-children"><a href="">Pages</a> -->
                         </li>
                         <li><a href="/contact">Contact</a></li>
                     </ul>
                 </nav><!-- #nav-menu-container -->
+
+                {% if user.is_authenticated %}
+                <div class="row">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <strong> Welcome {{request.user}} </strong>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="/logout">Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                {% else %}
+                <div class="row">
+                    <!-- Button trigger  Login modal -->
+                    <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#LoginModal">
+                        Login
+                    </button>
+                    <!-- Button trigger  SignUp modal -->
+                    <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#signupModal">
+                        SignUp
+                    </button>
+                </div>
+                {% endif %}
+            </div>
+
+        </div>
+
+    </header><!-- #header -->
+
+
+
+    <!-- SignUP Modal -->
+    <div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModal"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="signupModalTitle">SignUp Form</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/handleSignup" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" Choose a unique
+                                username" placeholder="Choose a unique username (lowercase & alphanumeric)" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fname">First Name</label>
+                            <input type="text" class="form-control" id="fname" name="fname" placeholder="First Name"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lname">Last Name</label>
+                            <input type="text" class="form-control" id="lname" name="lname" placeholder="Last Name"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email address</label>
+                            <input type="email" class="form-control" id="email" name="email"
+                                placeholder="name@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" name="password"
+                                placeholder="Enter your password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cpassword">Confirm Password</label>
+                            <input type="password" class="form-control" id="cpassword" name="cpassword"
+                                placeholder="Re-Enter your password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
             </div>
         </div>
-    </header><!-- #header -->
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="LoginModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="LoginModalTitle">Login Form</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/login" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="loginusername" name="loginusername"
+                                placeholder="Enter your username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="loginpassword">Password</label>
+                            <input type="password" class="form-control" id="loginpassword" name="loginpassword"
+                                placeholder="Enter your password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     {% block content %}
 
@@ -101,19 +213,16 @@
                         <h4>Newsletter</h4>
                         <p>Stay updated with our latest trends</p>
                         <div class="" id="mc_embed_signup">
-                            <form target="_blank"
-                                action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
-                                method="get">
+                            <form method="POST" action="{% url  'newsletter' %}">
+                                {% csrf_token %}
                                 <div class="input-group">
-                                    <input type="text" class="form-control" name="EMAIL"
-                                        placeholder="Enter Email Address" onfocus="this.placeholder = ''"
-                                        onblur="this.placeholder = 'Enter Email Address '" required="" type="email">
+                                    <input type="email" class="form-control" name="email"
+                                        placeholder="Enter Email Address">
                                     <div class="input-group-btn">
                                         <button class="btn btn-default" type="submit">
                                             <span class="lnr lnr-arrow-right"></span>
                                         </button>
                                     </div>
-                                    <div class="info"></div>
                                 </div>
                             </form>
                         </div>

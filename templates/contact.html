@@ -85,6 +85,7 @@
 			</div>
 			{% endfor %}
 			<div class="col-lg-8">
+				{% if user.is_authenticated %}
 				<form class="form-area contact-form text-right" style="margin-bottom: 50px;" method="POST">
 					{% csrf_token %}
 					<div class="row">
@@ -113,6 +114,16 @@
 						</div>
 					</div>
 				</form>
+				{% else %}
+				<div class="card">
+					<div class="card-header" style="background-color: bisque;">
+						<h4 style="text-align:center;">NOTE!!!</h4>
+					</div>
+					<div class="card-body">
+						<h5 class="card-title">Please login before to make contact to administration. Thank you!</h5>
+					</div>
+				</div>
+				{% endif %}
 			</div>
 		</div>
 	</div>

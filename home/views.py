@@ -1,5 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render, HttpResponse
 from .models import *
+from django.contrib import messages
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+
 # Create your views here.
 
 
@@ -40,9 +44,14 @@ def portfolio(request):
     return render(request, 'portfolio.html')
 
 
-def price(request):
+# def price(request):
 
-    return render(request, 'price.html')
+#     return render(request, 'price.html')
+
+
+# def element(request):
+
+#     return render(request, 'elements.html')
 
 
 def services(request):
@@ -50,3 +59,93 @@ def services(request):
     views['services'] = Services.objects.all()
     views['feedbacks'] = Feedback.objects.all()
     return render(request, 'services.html', views)
+
+
+def newsletter(request):
+    if request.method == "POST":
+        email = request.POST['email']
+        if Newsletter.objects.filter(email=email).exists():
+            messages.error(request, 'This Email is already submitted!')
+        else:
+            data = Newsletter.objects.create(
+                email=email
+            )
+            data.save()
+            messages.success(request, 'Thanks for submitting your Email!')
+    return redirect('/')
+
+
+def handleSignup(request):
+    if request.method == "POST":
+        # Get the request parameter
+        username = request.POST['username']
+        fname = request.POST['fname']
+        lname = request.POST['lname']
+        email = request.POST['email']
+        password = request.POST['password']
+        cpassword = request.POST['cpassword']
+
+        # Check for errorneous inputs
+        # username should be under 10 characters
+        if len(username) > 10:
+            messages.error(
+                request, "Username must be under 10 characters")
+            return redirect('home')
+
+        # username should be alphanumeric
+        if not username.isalnum():
+            messages.error(
+                request, "Username should only contain letters and numbers")
+            return redirect('home')
+
+        # passwords should  match
+        if password != cpassword:
+            messages.error(
+                request, "Passwords do not match!")
+            return redirect('home')
+
+        if User.objects.filter(username=username).exists():
+            messages.error(request, 'This username is already taken!')
+            return redirect('home')
+
+        if User.objects.filter(email=email).exists():
+            messages.error(request, 'This email is already registered!')
+            return redirect('home')
+
+        # Create the user
+        myuser = User.objects.create_user(username, email, password)
+        myuser.first_name = fname
+        myuser.last_name = lname
+        myuser.save()
+        messages.success(
+            request, "Your account has been successfully created!")
+        return redirect('home')
+
+    else:
+        return HttpResponse('404 - Not Found')
+
+
+def handleLogin(request):
+    if request.method == 'POST':
+        # Get the post parameters
+        loginusername = request.POST['loginusername']
+        loginpassword = request.POST['loginpassword']
+
+        user = authenticate(username=loginusername,
+                            password=loginpassword)
+
+        if user is not None:
+            login(request, user)
+            messages.success(request, "You are Successfully Logged In!")
+            return redirect('home')
+        else:
+            messages.error(request, "Invalid Credentials, Please try again.")
+            return redirect('home')
+
+    return HttpResponse('404 - Not Found')
+
+
+def handleLogout(request):
+    logout(request)
+    messages.success(request, "You are Successfully Logged out!")
+    return redirect('home')
