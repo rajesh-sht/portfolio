@@ -29,29 +29,25 @@ def contact(request):
         email = request.POST['email']
         subject = request.POST['subject']
         message = request.POST['message']
-        data = Contact.objects.create(
-            name=name,
-            email=email,
-            subject=subject,
-            message=message
-        )
-        data.save()
+        if Contact.objects.filter(email=email).exists():
+            messages.error(
+                request, "Email already exist, Please choose unique email!")
+        else:
+            data = Contact.objects.create(
+                name=name,
+                email=email,
+                subject=subject,
+                message=message
+            )
+            data.save()
+            messages.success(
+                request, "Thank you for contacting us, Please visit again.")
     return render(request, 'contact.html', views)
 
 
 def portfolio(request):
 
     return render(request, 'portfolio.html')
-
-
-# def price(request):
-
-#     return render(request, 'price.html')
-
-
-# def element(request):
-
-#     return render(request, 'elements.html')
 
 
 def services(request):
@@ -102,15 +98,15 @@ def handleSignup(request):
         if password != cpassword:
             messages.error(
                 request, "Passwords do not match!")
-            return redirect('home')
+            # return redirect('home')
 
         if User.objects.filter(username=username).exists():
             messages.error(request, 'This username is already taken!')
-            return redirect('home')
+            # return render('home')
 
         if User.objects.filter(email=email).exists():
             messages.error(request, 'This email is already registered!')
-            return redirect('home')
+            # return redirect('home')
 
         # Create the user
         myuser = User.objects.create_user(username, email, password)
@@ -149,3 +145,13 @@ def handleLogout(request):
     logout(request)
     messages.success(request, "You are Successfully Logged out!")
     return redirect('home')
+
+def bloghome(request):
+    
+    return render(request, 'blog-home.html')
+
+
+def blogsingle(request):
+
+
+    return render(request, 'blog-single.html')

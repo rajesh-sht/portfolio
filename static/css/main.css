@@ -2047,7 +2047,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #header {
-  position: fixed;
+  position: auto;
   left: 0;
   top: 0;
   right: 0;

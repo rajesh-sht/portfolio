@@ -49,22 +49,25 @@
                     <a href="/"><img src="{% static 'img/my_logo.png' %}" alt="" title="" /></a>
                 </div>
                 <nav id="nav-menu-container">
-                    <ul class="nav-menu">
+                    <ul class=" nav-menu">
                         <li><a href="/">Home</a></li>
                         <li><a href="/about">About</a></li>
                         <li><a href="/services">Services</a></li>
                         <li><a href="/portfolio">Portfolio</a></li>
-                        <!-- <li><a href="/element">Pricing</a></li> -->
-                        <li class="menu-has-children"><a href="">Blog</a>
-                            <ul>
-                                <li><a href="blog-home.html">Blog Home</a></li>
-                                <li><a href="blog-single.html">Blog Single</a></li>
-                            </ul>
-                        </li>
-                        <!-- <li class="menu-has-children"><a href="">Pages</a> -->
-                        </li>
                         <li><a href="/contact">Contact</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Dropdown link
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </li>
                     </ul>
+
                 </nav><!-- #nav-menu-container -->
 
                 {% if user.is_authenticated %}
@@ -106,6 +109,7 @@
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
+                {% include 'message.html' %}
                 <div class="modal-header">
                     <h5 class="modal-title" id="signupModalTitle">SignUp Form</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -113,12 +117,12 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="/handleSignup" method="POST">
+                    <form action="/signup" method="POST">
                         {% csrf_token %}
                         <div class="form-group">
                             <label for="username">Username</label>
-                            <input type="text" class="form-control" id="username" name="username" Choose a unique
-                                username" placeholder="Choose a unique username (lowercase & alphanumeric)" required>
+                            <input type="text" class="form-control" id="username" name="username"
+                                placeholder="Choose a unique username (lowercase & alphanumeric)" required>
                         </div>
                         <div class="form-group">
                             <label for="fname">First Name</label>
@@ -151,11 +155,13 @@
             </div>
         </div>
     </div>
+    <!-- Signup Modal End -->
 
     <!-- Login Modal -->
     <div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="LoginModal" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
+                {% include 'message.html' %}
                 <div class="modal-header">
                     <h5 class="modal-title" id="LoginModalTitle">Login Form</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -181,6 +187,7 @@
             </div>
         </div>
     </div>
+    <!-- Login Model End -->
 
 
     {% block content %}
@@ -188,7 +195,7 @@
     {% endblock %}
 
     <!-- start footer Area -->
-    <footer class="footer-area section-gap">
+    <footer class="footer-area section-gap" style="padding-top: 5%; padding-bottom: 5%;">
         <div class="container">
             <div class="row">
                 <div class="col-lg-5 col-md-6 col-sm-6">
@@ -233,10 +240,10 @@
                         <h4>Follow Me</h4>
                         <p>Let us be social</p>
                         <div class="footer-social d-flex align-items-center">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-dribbble"></i></a>
-                            <a href="#"><i class="fa fa-behance"></i></a>
+                            <a href="https://www.facebook.com/" target="_blank"><i class="fa fa-facebook"></i></a>
+                            <a href="https://twitter.com/?lang=en" target="_blank"><i class="fa fa-twitter"></i></a>
+                            <a href="https://app.slack.com/" target="_blank"><i class="fa fa-slack"></i></a>
+                            <a href="https://www.linkedin.com/" target="_blank"><i class="fa fa-linkedin"></i></a>
                         </div>
                     </div>
                 </div>
